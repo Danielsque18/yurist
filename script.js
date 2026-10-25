@@ -102,13 +102,12 @@ document.querySelectorAll('[data-split]').forEach(function (h) {
 
 // «С чем вы пришли?» — готовое сообщение Елене (ничего не сохраняется)
 (function () {
-  var letter = document.getElementById('letter'), wa = document.getElementById('sendWa'), toast = document.getElementById('toast');
+  var letter = document.getElementById('letter'), toast = document.getElementById('toast');
   var topics = document.querySelectorAll('.topic'), text = '';
   function build(topic) {
     text = 'Здравствуйте, Елена! Пишу с сайта. ' + (topic && topic !== 'Другой вопрос' ? 'Тема: ' + topic + '. ' : '') + 'Хочу получить оценку моей ситуации. Коротко: …';
     letter.style.opacity = 0;
     setTimeout(function () { letter.textContent = text; letter.style.opacity = 1; }, 180);
-    wa.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(text);
     topics.forEach(function (t) { var on = t.dataset.topic === topic; t.classList.toggle('on', on); t.setAttribute('aria-checked', on); });
   }
   topics.forEach(function (t) { t.addEventListener('click', function () { build(t.dataset.topic); }); });
