@@ -108,7 +108,9 @@
         im.onclick = function (e) {
           var r = im.getBoundingClientRect();
           posObj[pk] = Math.round((e.clientX - r.left) / r.width * 100) + '% ' + Math.round((e.clientY - r.top) / r.height * 100) + '%';
-          mark(); draw();
+          // только сдвигаем кадр: пересоздавать фото на каждый клик — лишняя память (Safari перезагружал вкладку)
+          wrap.querySelectorAll('.img-prev img').forEach(function (x) { x.style.objectPosition = posObj[pk]; });
+          mark();
         };
       });
     }
@@ -256,18 +258,37 @@
   }
   function upload(file, done) {
     if (!file) return;
+    if (file.size > 25 * 1024 * 1024) return toast('Фото больше 25 МБ — выберите поменьше или сделайте скриншот фото', true);
     if (demo) {
-      // в демо фото уменьшается и хранится в браузере
-      var img = new Image(), url = URL.createObjectURL(file);
-      img.onload = function () {
-        var k = Math.min(1, 1000 / Math.max(img.width, img.height)), cv = document.createElement('canvas');
-        cv.width = Math.round(img.width * k); cv.height = Math.round(img.height * k);
-        cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
-        URL.revokeObjectURL(url); done(cv.toDataURL('image/jpeg', .8)); toast('Фото добавлено — не забудьте «Сохранить»');
+      // в демо фото уменьшается и хранится в браузере. createImageBitmap с размером уменьшает сразу при чтении —
+      // большое фото с телефона не разворачивается в память целиком (иначе Safari перезагружает вкладку)
+      var url = URL.createObjectURL(file);
+      function draw(src, w, h) {
+        var k = Math.min(1, 1000 / Math.max(w, h)), cv = document.createElement('canvas');
+        cv.width = Math.round(w * k); cv.height = Math.round(h * k);
+        cv.getContext('2d').drawImage(src, 0, 0, cv.width, cv.height);
+        var out = cv.toDataURL('image/jpeg', .8);
+        cv.width = cv.height = 0; if (src.close) src.close(); URL.revokeObjectURL(url);
+        done(out); toast('Фото добавлено — не забудьте «Сохранить»');
+      }
+      function viaImg() {
+        var img = new Image();
+        img.onload = function () { draw(img, img.naturalWidth, img.naturalHeight); img.src = ''; };
+        img.onerror = function () { URL.revokeObjectURL(url); toast('Не удалось открыть картинку. Нужен JPG, PNG или WebP', true); };
+        img.src = url;
+      }
+      if (!window.createImageBitmap) return viaImg();
+      var probe = new Image();   // узнаём размер (без декодирования всего фото), затем читаем уже уменьшенным
+      probe.onload = function () {
+        var w = probe.naturalWidth, h = probe.naturalHeight, k = Math.min(1, 1000 / Math.max(w, h)); probe.src = '';
+        createImageBitmap(file, { resizeWidth: Math.round(w * k), resizeHeight: Math.round(h * k), resizeQuality: 'high' })
+          .then(function (bm) { draw(bm, bm.width, bm.height); }).catch(viaImg);
       };
-      img.onerror = function () { toast('Не удалось открыть картинку', true); };
-      img.src = url; return;
+      probe.onerror = function () { URL.revokeObjectURL(url); toast('Не удалось открыть картинку. Нужен JPG, PNG или WebP', true); };
+      probe.src = url;
+      return;
     }
+    if (file.size > 12 * 1024 * 1024) return toast('Фото больше 12 МБ — выберите поменьше', true);
     var fd = new FormData(); fd.append('file', file); toast('Загружаю фото…');
     fetch(API + '?action=upload', { method: 'POST', credentials: 'same-origin', headers: { 'X-CSRF': csrf }, body: fd })
       .then(function (r) { return r.json(); })
