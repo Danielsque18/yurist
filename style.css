@@ -59,10 +59,10 @@ body::after{content:"";position:fixed;inset:-50%;z-index:200;pointer-events:none
 
 /* ---------- первый экран ---------- */
 .hero{position:relative;min-height:min(860px,calc(100svh - 100px));display:flex;align-items:center;overflow:hidden;color:var(--ivory);background:var(--ink);padding:60px max(20px,calc((100% - var(--wrap))/2)) 90px;isolation:isolate}
-.hero-photo{position:absolute;top:0;right:0;bottom:0;width:62%;z-index:-2;-webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.5) 18%,#000 45%);mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.5) 18%,#000 45%)}
-.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:40% 30%;transform:scale(1.12);will-change:transform;animation:heroImg 2.2s var(--ease) both}
-@keyframes heroImg{from{opacity:0;transform:scale(1.22)}}
-.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,var(--ink) 0%,transparent 30%),radial-gradient(60% 50% at 70% 40%,transparent 40%,rgba(14,13,17,.5))}
+.hero-photo{position:absolute;top:clamp(48px,9vh,110px);right:0;bottom:0;width:62%;z-index:-2;-webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.5) 18%,#000 45%);mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.5) 18%,#000 45%)}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:52% 0%;transform:scale(1.04);transform-origin:50% 100%;will-change:transform;animation:heroImg 2.2s var(--ease) both}
+@keyframes heroImg{from{opacity:0;transform:scale(1.12)}}
+.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--ink) 0%,transparent 16%),linear-gradient(0deg,var(--ink) 0%,transparent 30%),radial-gradient(60% 50% at 70% 40%,transparent 40%,rgba(14,13,17,.5))}
 .hero-num{position:absolute;z-index:-1;left:max(0px,calc((100% - var(--wrap))/2 - 60px));bottom:-8vw;font:500 clamp(260px,38vw,560px)/.8 var(--serif);color:transparent;-webkit-text-stroke:1px rgba(201,168,106,.22);letter-spacing:-.05em;pointer-events:none;will-change:transform}
 .hero-in{position:relative;max-width:720px}
 .hero h1{font-size:clamp(46px,6.2vw,90px);line-height:1.04}
@@ -165,7 +165,7 @@ body::after{content:"";position:fixed;inset:-50%;z-index:200;pointer-events:none
 /* ---------- обо мне ---------- */
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:70px;align-items:center}
 .about-pic{margin:0;position:relative;border-radius:200px 200px 30px 30px;overflow:hidden;aspect-ratio:4/5}
-.about-pic img{width:100%;height:100%;object-fit:cover;object-position:35% 30%;transform:scale(1.08);will-change:transform}
+.about-pic img{width:100%;height:100%;object-fit:cover;object-position:30% 78%;transform:scale(1.08);will-change:transform}
 .about-pic::after{content:"";position:absolute;inset:14px;border:1px solid rgba(244,239,230,.55);border-radius:190px 190px 22px 22px;pointer-events:none}
 .quote{margin:34px 0 0;padding:0;font:italic 400 clamp(25px,2.5vw,34px)/1.3 var(--serif);color:var(--text)}
 .sign{margin:18px 0 0;font:italic 400 20px/1.2 var(--serif);color:var(--gold)}
@@ -238,8 +238,8 @@ body::after{content:"";position:fixed;inset:-50%;z-index:200;pointer-events:none
   .top-cta{display:none}   /* на телефоне есть нижняя кнопка — имя юриста важнее */
   .burger{margin-left:auto}
   .hero{flex-direction:column;align-items:stretch;min-height:0;padding:0 16px 60px}
-  .hero-photo{position:relative;width:calc(100% + 32px);margin:0 -16px;height:min(440px,108vw);-webkit-mask-image:linear-gradient(0deg,transparent 0%,#000 40%);mask-image:linear-gradient(0deg,transparent 0%,#000 40%)}
-  .hero-photo img{object-position:30% 25%}
+  .hero-photo{position:relative;top:auto;width:calc(100% + 32px);margin:24px -16px 0;height:min(440px,108vw);-webkit-mask-image:linear-gradient(0deg,transparent 0%,#000 40%);mask-image:linear-gradient(0deg,transparent 0%,#000 40%)}
+  .hero-photo img{object-position:50% 0%}
   .hero-in{margin-top:-120px}
   .hero h1{font-size:42px;line-height:1.08}
   .lead{font-size:17px;margin-top:20px}
@@ -290,3 +290,16 @@ body::after{content:"";position:fixed;inset:-50%;z-index:200;pointer-events:none
 
 h1,h2,h3,.fact b,.clist a,.clist b,.steps li::before,.pay-i,.pnum{font-variant-numeric:lining-nums proportional-nums;font-feature-settings:"lnum" 1}
 .plink{min-height:44px}
+
+/* отзывы с Авито — лента карточек, листается вбок */
+.reviews{overflow:hidden}
+.rev-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:34px}
+.rev-link{color:var(--gold-t);font-weight:600;text-decoration:none;border-bottom:1px solid currentColor;padding:8px 0;white-space:nowrap}
+.rev-track{display:flex;align-items:flex-start;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 22px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.rev{flex:0 0 min(360px,84vw);scroll-snap-align:start;display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px 26px 22px;box-shadow:0 18px 40px -30px rgba(14,13,17,.35)}
+.rev-tag{margin:0 0 14px;font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-t)}
+.rev-t{margin:0;font-size:16px;line-height:1.65}
+.rev-a{margin:20px 0 0;padding-top:16px;border-top:1px solid var(--line);display:flex;flex-direction:column}
+.rev-a b{font-family:var(--serif);font-size:19px;font-weight:500}
+.rev-a span{font-size:13px;color:var(--text-2,#57524b);margin-top:2px}
+@media (max-width:700px){.rev-head{flex-direction:column;align-items:flex-start}}
