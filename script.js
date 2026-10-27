@@ -1,6 +1,6 @@
 document.documentElement.classList.add('js');
 var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-var PHONE = '79139706240';
+var PHONE = window.EL_PHONE || '79139706240';   // номер из админки (render.js)
 
 // заголовки проявляются по словам
 document.querySelectorAll('[data-split]').forEach(function (h) {
@@ -108,11 +108,12 @@ document.querySelectorAll('[data-split]').forEach(function (h) {
     text = 'Здравствуйте, Елена! Пишу с сайта. ' + (topic && topic !== 'Другой вопрос' ? 'Тема: ' + topic + '. ' : '') + 'Хочу получить оценку моей ситуации. Коротко: …';
     letter.style.opacity = 0;
     setTimeout(function () { letter.textContent = text; letter.style.opacity = 1; }, 180);
+    topics = document.querySelectorAll('.topic');
     topics.forEach(function (t) { var on = t.dataset.topic === topic; t.classList.toggle('on', on); t.setAttribute('aria-checked', on); });
   }
-  topics.forEach(function (t) { t.addEventListener('click', function () { build(t.dataset.topic); }); });
-  // «Описать ситуацию» в карточках направлений — сразу выбирает тему
-  document.querySelectorAll('.plink[data-topic]').forEach(function (a) { a.addEventListener('click', function () { build(a.dataset.topic); }); });
+  // темы и «Описать ситуацию» в карточках направлений — сразу выбирают тему (кнопки могут пересобраться из данных, поэтому слушаем документ)
+  document.addEventListener('click', function (e) { var t = e.target.closest('.topic, .plink[data-topic]'); if (t) build(t.dataset.topic); });
+  document.addEventListener('content:changed', function () { topics = document.querySelectorAll('.topic'); });
   function say(t) { toast.textContent = t; toast.hidden = false; clearTimeout(say.t); say.t = setTimeout(function () { toast.hidden = true; }, 2600); }
   // копируем сразу, в момент нажатия (Safari не даёт копировать после открытия новой вкладки)
   function copy(done) {
@@ -127,7 +128,7 @@ document.querySelectorAll('[data-split]').forEach(function (h) {
     copy(function () { say('Текст скопирован — вставьте его в чат'); });
     window.open('https://t.me/+' + PHONE, '_blank', 'noopener');
   });
-  document.getElementById('copyOnly').addEventListener('click', function () { copy(function () { say('Текст скопирован — напишите в MAX на номер 8-913-970-62-40'); }); });
+  document.getElementById('copyOnly').addEventListener('click', function () { copy(function () { say('Текст скопирован — напишите в MAX на номер ' + (window.EL_PHONE_TXT || '8-913-970-62-40')); }); });
   build('');
 })();
 
