@@ -65,7 +65,7 @@ document.querySelectorAll('[data-split]').forEach(function (h) {
     top.classList.toggle('slim', y > 40);
     if (calm) return;
     if (y < h * 1.2) {
-      heroImg.style.transform = 'translate3d(0,' + (y * .18) + 'px,0) scale(' + (1.12 - Math.min(y / h, 1) * .08) + ')';
+      heroImg.style.transform = 'translate3d(0,' + (y * .12) + 'px,0)';   // лёгкий параллакс без приближения — фото видно целиком
       if (num) num.style.transform = 'translate3d(0,' + (y * -.25) + 'px,0)';
     }
     if (desk.matches && extra) {

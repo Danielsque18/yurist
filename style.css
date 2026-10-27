@@ -60,9 +60,9 @@ body::after{content:"";position:fixed;inset:-50%;z-index:200;pointer-events:none
 /* ---------- первый экран ---------- */
 .hero{position:relative;min-height:min(860px,calc(100svh - 100px));display:flex;align-items:center;overflow:hidden;color:var(--ivory);background:var(--ink);padding:60px max(20px,calc((100% - var(--wrap))/2)) 90px;isolation:isolate}
 .hero-photo{position:absolute;top:clamp(48px,9vh,110px);right:0;bottom:0;width:62%;z-index:-2;-webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.5) 18%,#000 45%);mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.5) 18%,#000 45%)}
-.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:52% 0%;transform:scale(1.04);transform-origin:50% 100%;will-change:transform;animation:heroImg 2.2s var(--ease) both}
-@keyframes heroImg{from{opacity:0;transform:scale(1.12)}}
-.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--ink) 0%,transparent 16%),linear-gradient(0deg,var(--ink) 0%,transparent 30%),radial-gradient(60% 50% at 70% 40%,transparent 40%,rgba(14,13,17,.5))}
+.hero-photo img{width:100%;height:100%;object-fit:contain;object-position:70% 100%;transform:none;transform-origin:50% 100%;will-change:transform;animation:heroImg 2.2s var(--ease) both}
+@keyframes heroImg{from{opacity:0;transform:translateY(20px)}}
+.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--ink) 0%,transparent 16%),linear-gradient(0deg,var(--ink) 0%,transparent 12%),radial-gradient(70% 60% at 70% 45%,transparent 55%,rgba(14,13,17,.35))}
 .hero-num{position:absolute;z-index:-1;left:max(0px,calc((100% - var(--wrap))/2 - 60px));bottom:-8vw;font:500 clamp(260px,38vw,560px)/.8 var(--serif);color:transparent;-webkit-text-stroke:1px rgba(201,168,106,.22);letter-spacing:-.05em;pointer-events:none;will-change:transform}
 .hero-in{position:relative;max-width:720px}
 .hero h1{font-size:clamp(46px,6.2vw,90px);line-height:1.04}
@@ -238,9 +238,9 @@ body::after{content:"";position:fixed;inset:-50%;z-index:200;pointer-events:none
   .top-cta{display:none}   /* на телефоне есть нижняя кнопка — имя юриста важнее */
   .burger{margin-left:auto}
   .hero{flex-direction:column;align-items:stretch;min-height:0;padding:0 16px 60px}
-  .hero-photo{position:relative;top:auto;width:calc(100% + 32px);margin:24px -16px 0;height:min(440px,108vw);-webkit-mask-image:linear-gradient(0deg,transparent 0%,#000 40%);mask-image:linear-gradient(0deg,transparent 0%,#000 40%)}
-  .hero-photo img{object-position:50% 0%}
-  .hero-in{margin-top:-120px}
+  .hero-photo{position:relative;top:auto;width:calc(100% + 32px);margin:24px -16px 0;height:min(500px,122vw);-webkit-mask-image:linear-gradient(0deg,transparent 0%,#000 16%);mask-image:linear-gradient(0deg,transparent 0%,#000 16%)}
+  .hero-photo img{object-fit:cover;object-position:50% 50%}
+  .hero-in{margin-top:-36px}
   .hero h1{font-size:42px;line-height:1.08}
   .lead{font-size:17px;margin-top:20px}
   .free{font-size:15px;padding:14px 16px}
